@@ -1,12 +1,14 @@
 package com.oscarwkl.joey_assistant;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                         conversionButton.setElevation(10);
                         break;
                 }
-                return true;
+                return false;
             }
         });
         // whatToEatButton effects
@@ -172,6 +174,15 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
                 return true;
+            }
+        });
+
+        // conversionButton onClick Listener
+        conversionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ConversionActivity.class);
+                startActivity(intent);
             }
         });
     }
