@@ -1,10 +1,13 @@
 package com.oscarwkl.joey_assistant;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 public class MainActivity extends AppCompatActivity {
+    private SharedPreferences sharedPreferences;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -27,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.TRANSPARENT);
 
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
 
         CardView conversionButton = findViewById(R.id.conversionButton);
         CardView whatToEatButton = findViewById(R.id.whatToEatButton);
@@ -73,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         whatToEatButton.setElevation(10);
                         break;
                 }
-                return true;
+                return false;
             }
         });
         // buyOrNotButton effects
@@ -93,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                         buyOrNotButton.setElevation(10);
                         break;
                 }
-                return true;
+                return false;
             }
         });
         // mixueButton effects
@@ -113,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         mixueButton.setElevation(10);
                         break;
                 }
-                return true;
+                return false;
             }
         });
         // escapeRoomButton effects
@@ -133,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                         escapeRoomButton.setElevation(10);
                         break;
                 }
-                return true;
+                return false;
             }
         });
         // myPageButton effects
@@ -153,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                         myPageButton.setElevation(10);
                         break;
                 }
-                return true;
+                return false;
             }
         });
         // aboutUsButton effects
@@ -173,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                         aboutUsButton.setElevation(8);
                         break;
                 }
-                return true;
+                return false;
             }
         });
 
@@ -185,5 +191,43 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // whatToEatButton onClick Listener
+        whatToEatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, WhatToEatActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // buyOrNotButton onClick Listener
+        buyOrNotButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openError();
+            }
+        });
+
+        // Display conversion description
+        TextView conversionDescription = findViewById(R.id.conversionButtonDescription);
+        conversionDescription.setText("今日份 MYRCNY 汇率: " +
+                Float.toString(sharedPreferences.getFloat("cny", 1.0f) /
+                        sharedPreferences.getFloat("myr", 1.0f)));
+
+    }
+    // error page when crash
+    private void openError() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("炸啦!");
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.error, null);
+        builder.setView(dialogView);
+
+        builder.setNegativeButton("好嘟", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
