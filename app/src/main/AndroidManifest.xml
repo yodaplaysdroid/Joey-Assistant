@@ -15,7 +15,6 @@
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true"
-            android:label="Joey's Assistant"
             android:theme="@style/Theme.Joey_assistant">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +30,8 @@
         <activity
             android:name=".WhatToEatActivity"
             android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".BuyOrNotActivity"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

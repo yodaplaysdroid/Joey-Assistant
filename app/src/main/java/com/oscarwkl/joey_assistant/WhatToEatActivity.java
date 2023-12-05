@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -54,9 +55,10 @@ public class WhatToEatActivity extends AppCompatActivity {
 
         ImageView backButton = findViewById(R.id.backButton2);
         FloatingActionButton addButton = findViewById(R.id.addButton);
+        ImageView gif1 = findViewById(R.id.gif1);
         container = findViewById(R.id.foodBox);
         chosenFood = findViewById(R.id.chosenFood);
-        startStopButton = findViewById(R.id.startStopButton);
+        startStopButton = findViewById(R.id.startStopButton1);
 
         backButton.setOnClickListener(view -> finish());
 
@@ -74,12 +76,17 @@ public class WhatToEatActivity extends AppCompatActivity {
                 if (!isShuffling) {
                     startStopButton.setText("STOP");
                     startStopButton.setBackgroundColor(Color.parseColor("#B78E97"));
+                    Glide.with(this)
+                            .asGif()
+                            .load(R.drawable.gif1)
+                            .placeholder(R.drawable.gif1)
+                            .into(gif1);
                     isShuffling = true;
                     shuffleRunnable = new Runnable() {
                         @Override
                         public void run() {
                             chosenFood.setText(foods.get(currentIndex));
-                            currentIndex = (currentIndex + 1) % (maxIndex);
+                            currentIndex = (currentIndex + 1) % maxIndex;
                             handler.postDelayed(this, 20);
                         }
                     };
@@ -87,6 +94,7 @@ public class WhatToEatActivity extends AppCompatActivity {
                 } else {
                     startStopButton.setText("START");
                     startStopButton.setBackgroundColor(Color.parseColor("#478778"));
+                    gif1.setImageResource(R.drawable.gif1);
                     isShuffling = false;
                     handler.removeCallbacks(shuffleRunnable);
                 }

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ACE4C5"
+    android:background="#97CCFD"
     android:paddingLeft="30dp"
     android:paddingRight="30dp">
 
@@ -25,7 +25,7 @@
             android:paddingBottom="30dp">
 
             <ImageView
-                android:id="@+id/backButton2"
+                android:id="@+id/backButton3"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/back"
@@ -35,18 +35,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="\n今天恰森莫？\n"
+                android:text="\n买，还是不买？\n"
                 android:fontFamily="@font/simhei"
                 android:textSize="50dp"
                 android:textFontWeight="900"
-                android:textColor="#7CB495" />
+                android:textColor="#558ABB" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="10dp"
-                app:cardBackgroundColor="#EEE082"
+                app:cardBackgroundColor="#FFD3E0"
                 android:layout_margin="20dp">
 
                 <LinearLayout
@@ -56,15 +56,15 @@
                     android:padding="10dp">
 
                     <ImageView
-                        android:id="@+id/gif1"
+                        android:id="@+id/gif2"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:src="@drawable/gif1"
+                        android:src="@drawable/gif2"
                         android:layout_gravity="center"/>
 
                     <TextView
-                        android:id="@+id/chosenFood"
-                        android:text="我要吃..."
+                        android:id="@+id/buy"
+                        android:text="买？"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -73,7 +73,7 @@
                         android:layout_margin="30dp"/>
 
                     <Button
-                        android:id="@+id/startStopButton1"
+                        android:id="@+id/startStopButton2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="START"
@@ -92,41 +92,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="20dp">
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="MENU"
-                        android:fontFamily="@font/ariblk"
-                        android:padding="10dp"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:layout_gravity="center"/>
-
-                    <LinearLayout
-                        android:id="@+id/foodBox"
+                        android:id="@+id/results"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"/>
+                        android:text="刷卡下单     0 : 0     下次一定"
+                        android:fontFamily="@font/arial"
+                        android:padding="10dp"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="50dp"
-        android:backgroundTint="#DCFFEC"
-        android:src="@drawable/add"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="#7CB495" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

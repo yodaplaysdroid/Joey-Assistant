@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -182,13 +183,26 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        buyOrNotButton.setOnClickListener(v -> openError());
+        buyOrNotButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, BuyOrNotActivity.class);
+            startActivity(intent);
+        });
 
         mixueButton.setOnClickListener(v -> openError());
 
         escapeRoomButton.setOnClickListener(v -> openError());
 
-        myPageButton.setOnClickListener(v -> openError());
+        myPageButton.setOnClickListener(v -> {
+            String url = "androidamap://poi?sourceApplication=joeyassistant&keywords=蜜雪冰城&dev=0";
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            intent.setPackage("com.autonavi.minimap");
+
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                openError();
+            }
+        });
 
         aboutUsButton.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -212,10 +226,13 @@ public class MainActivity extends AppCompatActivity {
         TextView whatToEatDescription = findViewById(R.id.whatToEatDescription);
         Random random = new Random();
         ArrayList<String> foods = getArray("FOODS");
-
         if (foods.size() > 0) {
             whatToEatDescription.setText("今日份美食推荐: " + foods.get(random.nextInt(foods.size())));
         }
+
+        TextView buyOrNotDescription = findViewById(R.id.buyOrNotDescription);
+        String[] buy = { "刷卡拿下！", "下次一定！" };
+        buyOrNotDescription.setText("今日的风水分析建议: " + buy[random.nextInt(2)]);
     }
 
     private void openError() {
