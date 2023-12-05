@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="APP_NAME: JOEY'S ASSISTANT"
+        android:textSize="15sp"
+        android:fontFamily="@font/arialbd"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VERSION: v2.0b"
+        android:textSize="15sp"
+        android:fontFamily="@font/arial"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AUTHOR: 马来西亚国际废青有限公司"
+        android:textSize="15sp"
+        android:fontFamily="@font/arial"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SOURCE: https://github.com/yodaplaysdroid/Joey-Assistant/"
+        android:textSize="15sp"
+        android:fontFamily="@font/arial"/>
+
+</LinearLayout>

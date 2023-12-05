@@ -2,6 +2,7 @@ package com.oscarwkl.joey_assistant;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -10,11 +11,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
@@ -41,172 +52,184 @@ public class MainActivity extends AppCompatActivity {
         CardView escapeRoomButton = findViewById(R.id.escapeRoomButton);
         CardView myPageButton = findViewById(R.id.myPageButton);
         CardView aboutUsButton = findViewById(R.id.aboutUsButton);
+        TextView timeGreeting = findViewById(R.id.timeGreeting);
+        ImageView timeIcon = findViewById(R.id.timeIcon);
+
+        // Get time and adjust greetings
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        if (hour >= 19 || hour < 4) {
+            timeGreeting.setText("晚上好！");
+            timeIcon.setImageResource(R.drawable.moon);
+        } else if (hour < 12) {
+            timeGreeting.setText("早上好！");
+            timeIcon.setImageResource(R.drawable.morning);
+        } else if (hour < 17) {
+            timeGreeting.setText("中午好！");
+            timeIcon.setImageResource(R.drawable.sun);
+        } else {
+            timeGreeting.setText("傍上好！");
+            timeIcon.setImageResource(R.drawable.evening);
+        }
 
         // conversionButton effects
-        conversionButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Change the background color and elevation when pressed
-                        conversionButton.setCardBackgroundColor(Color.parseColor("#C2ADEA"));
-                        conversionButton.setElevation(0);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        // Change the background color and elevation when released
-                        conversionButton.setCardBackgroundColor(Color.parseColor("#B19CD9"));
-                        conversionButton.setElevation(10);
-                        break;
-                }
-                return false;
+        conversionButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    // Change the background color and elevation when pressed
+                    conversionButton.setCardBackgroundColor(Color.parseColor("#C2ADEA"));
+                    conversionButton.setElevation(0);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    // Change the background color and elevation when released
+                    conversionButton.setCardBackgroundColor(Color.parseColor("#B19CD9"));
+                    conversionButton.setElevation(10);
+                    break;
             }
+            return false;
         });
         // whatToEatButton effects
-        whatToEatButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Change the background color and elevation when pressed
-                        whatToEatButton.setCardBackgroundColor(Color.parseColor("#ACE4C5"));
-                        whatToEatButton.setElevation(0);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        // Change the background color and elevation when released
-                        whatToEatButton.setCardBackgroundColor(Color.parseColor("#9BD3B4"));
-                        whatToEatButton.setElevation(10);
-                        break;
-                }
-                return false;
+        whatToEatButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    // Change the background color and elevation when pressed
+                    whatToEatButton.setCardBackgroundColor(Color.parseColor("#ACE4C5"));
+                    whatToEatButton.setElevation(0);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    // Change the background color and elevation when released
+                    whatToEatButton.setCardBackgroundColor(Color.parseColor("#9BD3B4"));
+                    whatToEatButton.setElevation(10);
+                    break;
             }
+            return false;
         });
         // buyOrNotButton effects
-        buyOrNotButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Change the background color and elevation when pressed
-                        buyOrNotButton.setCardBackgroundColor(Color.parseColor("#86BBEC"));
-                        buyOrNotButton.setElevation(0);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        // Change the background color and elevation when released
-                        buyOrNotButton.setCardBackgroundColor(Color.parseColor("#75AADB"));
-                        buyOrNotButton.setElevation(10);
-                        break;
-                }
-                return false;
+        buyOrNotButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    // Change the background color and elevation when pressed
+                    buyOrNotButton.setCardBackgroundColor(Color.parseColor("#86BBEC"));
+                    buyOrNotButton.setElevation(0);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    // Change the background color and elevation when released
+                    buyOrNotButton.setCardBackgroundColor(Color.parseColor("#75AADB"));
+                    buyOrNotButton.setElevation(10);
+                    break;
             }
+            return false;
         });
         // mixueButton effects
-        mixueButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Change the background color and elevation when pressed
-                        mixueButton.setCardBackgroundColor(Color.parseColor("#FFB9C1"));
-                        mixueButton.setElevation(0);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        // Change the background color and elevation when released
-                        mixueButton.setCardBackgroundColor(Color.parseColor("#FFA8B0"));
-                        mixueButton.setElevation(10);
-                        break;
-                }
-                return false;
+        mixueButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    // Change the background color and elevation when pressed
+                    mixueButton.setCardBackgroundColor(Color.parseColor("#FFB9C1"));
+                    mixueButton.setElevation(0);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    // Change the background color and elevation when released
+                    mixueButton.setCardBackgroundColor(Color.parseColor("#FFA8B0"));
+                    mixueButton.setElevation(10);
+                    break;
             }
+            return false;
         });
         // escapeRoomButton effects
-        escapeRoomButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Change the background color and elevation when pressed
-                        escapeRoomButton.setCardBackgroundColor(Color.parseColor("#FFE4F1"));
-                        escapeRoomButton.setElevation(0);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        // Change the background color and elevation when released
-                        escapeRoomButton.setCardBackgroundColor(Color.parseColor("#FFD3E0"));
-                        escapeRoomButton.setElevation(10);
-                        break;
-                }
-                return false;
+        escapeRoomButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    // Change the background color and elevation when pressed
+                    escapeRoomButton.setCardBackgroundColor(Color.parseColor("#FFE4F1"));
+                    escapeRoomButton.setElevation(0);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    // Change the background color and elevation when released
+                    escapeRoomButton.setCardBackgroundColor(Color.parseColor("#FFD3E0"));
+                    escapeRoomButton.setElevation(10);
+                    break;
             }
+            return false;
         });
         // myPageButton effects
-        myPageButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Change the background color and elevation when pressed
-                        myPageButton.setCardBackgroundColor(Color.parseColor("#FFF193"));
-                        myPageButton.setElevation(0);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        // Change the background color and elevation when released
-                        myPageButton.setCardBackgroundColor(Color.parseColor("#FFE082"));
-                        myPageButton.setElevation(10);
-                        break;
-                }
-                return false;
+        myPageButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    // Change the background color and elevation when pressed
+                    myPageButton.setCardBackgroundColor(Color.parseColor("#FFF193"));
+                    myPageButton.setElevation(0);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    // Change the background color and elevation when released
+                    myPageButton.setCardBackgroundColor(Color.parseColor("#FFE082"));
+                    myPageButton.setElevation(10);
+                    break;
             }
+            return false;
         });
         // aboutUsButton effects
-        aboutUsButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Change the background color and elevation when pressed
-                        aboutUsButton.setCardBackgroundColor(Color.parseColor("#EDEDED"));
-                        aboutUsButton.setElevation(0);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        // Change the background color and elevation when released
-                        aboutUsButton.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
-                        aboutUsButton.setElevation(8);
-                        break;
-                }
-                return false;
+        aboutUsButton.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    // Change the background color and elevation when pressed
+                    aboutUsButton.setCardBackgroundColor(Color.parseColor("#EDEDED"));
+                    aboutUsButton.setElevation(0);
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    // Change the background color and elevation when released
+                    aboutUsButton.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+                    aboutUsButton.setElevation(8);
+                    break;
             }
+            return false;
         });
 
         // conversionButton onClick Listener
-        conversionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ConversionActivity.class);
-                startActivity(intent);
-            }
+        conversionButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ConversionActivity.class);
+            startActivity(intent);
         });
 
         // whatToEatButton onClick Listener
-        whatToEatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, WhatToEatActivity.class);
-                startActivity(intent);
-            }
+        whatToEatButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, WhatToEatActivity.class);
+            startActivity(intent);
         });
 
         // buyOrNotButton onClick Listener
-        buyOrNotButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openError();
-            }
+        buyOrNotButton.setOnClickListener(v -> openError());
+
+        // mixueButton onClick Listener
+        mixueButton.setOnClickListener(v -> openError());
+
+        // escapeRoomButton onClick Listener
+        escapeRoomButton.setOnClickListener(v -> openError());
+
+        // myPageButton onClick Listener
+        myPageButton.setOnClickListener(v -> openError());
+
+        // aboutUsButton onClick Listener
+        aboutUsButton.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("关于我们");
+
+            LayoutInflater inflater = getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.about_us, null);
+            builder.setView(dialogView);
+
+            builder.setPositiveButton("知道啦，谢谢！", (dialog, which) -> dialog.dismiss());
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
 
         // Display conversion description
@@ -215,6 +238,13 @@ public class MainActivity extends AppCompatActivity {
                 Float.toString(sharedPreferences.getFloat("cny", 1.0f) /
                         sharedPreferences.getFloat("myr", 1.0f)));
 
+        TextView whatToEatDescription = findViewById(R.id.whatToEatDescription);
+        Random random = new Random();
+        ArrayList<String> foods = getArray("foods");
+
+        if (foods.size() > 0) {
+            whatToEatDescription.setText("今日份美食推荐: " + foods.get(random.nextInt(foods.size())));
+        }
     }
     // error page when crash
     private void openError() {
@@ -229,5 +259,24 @@ public class MainActivity extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    // Retrieve array from SharedPreferences
+    public ArrayList<String> getArray(String arrayName) {
+        SharedPreferences prefs = getSharedPreferences("whatToEat", Context.MODE_PRIVATE);
+        String storedArrayString = prefs.getString(arrayName, null);
+        if (storedArrayString != null) {
+            try {
+                JSONArray jsonArray = new JSONArray(storedArrayString);
+                String[] array = new String[jsonArray.length()];
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    array[i] = jsonArray.getString(i);
+                }
+                return new ArrayList<>(Arrays.asList(array));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return new ArrayList<String>();
     }
 }
