@@ -6,15 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -27,23 +24,21 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
-    private SharedPreferences sharedPreferences;
 
-    @SuppressLint("ClickableViewAccessibility")
+public class MainActivity extends AppCompatActivity {
+
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set UI to full screen
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
         getWindow().setStatusBarColor(Color.TRANSPARENT);
-
         setContentView(R.layout.activity_main);
 
-        sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("CURRENCY", MODE_PRIVATE);
 
         CardView conversionButton = findViewById(R.id.conversionButton);
         CardView whatToEatButton = findViewById(R.id.whatToEatButton);
@@ -55,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
         TextView timeGreeting = findViewById(R.id.timeGreeting);
         ImageView timeIcon = findViewById(R.id.timeIcon);
 
-        // Get time and adjust greetings
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
@@ -73,119 +67,104 @@ public class MainActivity extends AppCompatActivity {
             timeIcon.setImageResource(R.drawable.evening);
         }
 
-        // conversionButton effects
         conversionButton.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    // Change the background color and elevation when pressed
                     conversionButton.setCardBackgroundColor(Color.parseColor("#C2ADEA"));
                     conversionButton.setElevation(0);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    // Change the background color and elevation when released
                     conversionButton.setCardBackgroundColor(Color.parseColor("#B19CD9"));
                     conversionButton.setElevation(10);
                     break;
             }
             return false;
         });
-        // whatToEatButton effects
+
         whatToEatButton.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    // Change the background color and elevation when pressed
                     whatToEatButton.setCardBackgroundColor(Color.parseColor("#ACE4C5"));
                     whatToEatButton.setElevation(0);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    // Change the background color and elevation when released
                     whatToEatButton.setCardBackgroundColor(Color.parseColor("#9BD3B4"));
                     whatToEatButton.setElevation(10);
                     break;
             }
             return false;
         });
-        // buyOrNotButton effects
+
         buyOrNotButton.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    // Change the background color and elevation when pressed
                     buyOrNotButton.setCardBackgroundColor(Color.parseColor("#86BBEC"));
                     buyOrNotButton.setElevation(0);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    // Change the background color and elevation when released
                     buyOrNotButton.setCardBackgroundColor(Color.parseColor("#75AADB"));
                     buyOrNotButton.setElevation(10);
                     break;
             }
             return false;
         });
-        // mixueButton effects
+
         mixueButton.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    // Change the background color and elevation when pressed
                     mixueButton.setCardBackgroundColor(Color.parseColor("#FFB9C1"));
                     mixueButton.setElevation(0);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    // Change the background color and elevation when released
                     mixueButton.setCardBackgroundColor(Color.parseColor("#FFA8B0"));
                     mixueButton.setElevation(10);
                     break;
             }
             return false;
         });
-        // escapeRoomButton effects
+
         escapeRoomButton.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    // Change the background color and elevation when pressed
                     escapeRoomButton.setCardBackgroundColor(Color.parseColor("#FFE4F1"));
                     escapeRoomButton.setElevation(0);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    // Change the background color and elevation when released
                     escapeRoomButton.setCardBackgroundColor(Color.parseColor("#FFD3E0"));
                     escapeRoomButton.setElevation(10);
                     break;
             }
             return false;
         });
-        // myPageButton effects
+
         myPageButton.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    // Change the background color and elevation when pressed
                     myPageButton.setCardBackgroundColor(Color.parseColor("#FFF193"));
                     myPageButton.setElevation(0);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    // Change the background color and elevation when released
                     myPageButton.setCardBackgroundColor(Color.parseColor("#FFE082"));
                     myPageButton.setElevation(10);
                     break;
             }
             return false;
         });
-        // aboutUsButton effects
+
         aboutUsButton.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    // Change the background color and elevation when pressed
                     aboutUsButton.setCardBackgroundColor(Color.parseColor("#EDEDED"));
                     aboutUsButton.setElevation(0);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    // Change the background color and elevation when released
                     aboutUsButton.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                     aboutUsButton.setElevation(8);
                     break;
@@ -193,31 +172,24 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        // conversionButton onClick Listener
         conversionButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ConversionActivity.class);
             startActivity(intent);
         });
 
-        // whatToEatButton onClick Listener
         whatToEatButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, WhatToEatActivity.class);
             startActivity(intent);
         });
 
-        // buyOrNotButton onClick Listener
         buyOrNotButton.setOnClickListener(v -> openError());
 
-        // mixueButton onClick Listener
         mixueButton.setOnClickListener(v -> openError());
 
-        // escapeRoomButton onClick Listener
         escapeRoomButton.setOnClickListener(v -> openError());
 
-        // myPageButton onClick Listener
         myPageButton.setOnClickListener(v -> openError());
 
-        // aboutUsButton onClick Listener
         aboutUsButton.setOnClickListener(v -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("关于我们");
@@ -232,21 +204,20 @@ public class MainActivity extends AppCompatActivity {
             dialog.show();
         });
 
-        // Display conversion description
         TextView conversionDescription = findViewById(R.id.conversionButtonDescription);
         conversionDescription.setText("今日份 MYRCNY 汇率: " +
-                Float.toString(sharedPreferences.getFloat("cny", 1.0f) /
-                        sharedPreferences.getFloat("myr", 1.0f)));
+            Float.toString(sharedPreferences.getFloat("CNY", 1.0f) /
+                sharedPreferences.getFloat("MYR", 1.0f)));
 
         TextView whatToEatDescription = findViewById(R.id.whatToEatDescription);
         Random random = new Random();
-        ArrayList<String> foods = getArray("foods");
+        ArrayList<String> foods = getArray("FOODS");
 
         if (foods.size() > 0) {
             whatToEatDescription.setText("今日份美食推荐: " + foods.get(random.nextInt(foods.size())));
         }
     }
-    // error page when crash
+
     private void openError() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("炸啦!");
@@ -261,9 +232,8 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    // Retrieve array from SharedPreferences
     public ArrayList<String> getArray(String arrayName) {
-        SharedPreferences prefs = getSharedPreferences("whatToEat", Context.MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("EAT", Context.MODE_PRIVATE);
         String storedArrayString = prefs.getString(arrayName, null);
         if (storedArrayString != null) {
             try {
@@ -277,6 +247,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 }

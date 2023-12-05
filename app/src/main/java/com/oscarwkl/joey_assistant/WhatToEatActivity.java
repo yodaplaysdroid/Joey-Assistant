@@ -1,5 +1,6 @@
 package com.oscarwkl.joey_assistant;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,7 +31,6 @@ import java.util.Random;
 
 public class WhatToEatActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
-    private ImageView backButton;
     private LinearLayout container;
     private TextView chosenFood;
     private Button startStopButton;
@@ -39,39 +39,35 @@ public class WhatToEatActivity extends AppCompatActivity {
     private Runnable shuffleRunnable;
     private int currentIndex = 0;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set UI to full screen
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
         );
         getWindow().setStatusBarColor(Color.TRANSPARENT);
-
         setContentView(R.layout.activity_what_to_eat);
 
-        sharedPreferences = getSharedPreferences("whatToEat", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("EAT", MODE_PRIVATE);
 
-        backButton = findViewById(R.id.backButton2);
+        ImageView backButton = findViewById(R.id.backButton2);
+        FloatingActionButton addButton = findViewById(R.id.addButton);
         container = findViewById(R.id.foodBox);
         chosenFood = findViewById(R.id.chosenFood);
         startStopButton = findViewById(R.id.startStopButton);
 
-        // backButton onClick Listener
         backButton.setOnClickListener(view -> finish());
 
-        FloatingActionButton addButton = findViewById(R.id.addButton);
+        addButton.setOnClickListener(view -> openInputDialog());
 
         displayFoods();
-
-        // Add Listener to add button
-        addButton.setOnClickListener(view -> openInputDialog());
 
         Handler handler = new Handler();
 
         startStopButton.setOnClickListener(v -> {
-            ArrayList<String> foods = getArray("foods");
+            ArrayList<String> foods = getArray("FOODS");
             int maxIndex = foods.size();
             if (maxIndex == 0) openError();
             else {
@@ -98,19 +94,15 @@ public class WhatToEatActivity extends AppCompatActivity {
         });
     }
 
-    // Convert array to JSON and save to SharedPreferences
     public void saveArray(String[] array, String arrayName) {
-        SharedPreferences prefs = getSharedPreferences("whatToEat", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         JSONArray jsonArray = new JSONArray(Arrays.asList(array));
         editor.putString(arrayName, jsonArray.toString());
         editor.apply();
     }
 
-    // Retrieve array from SharedPreferences
     public ArrayList<String> getArray(String arrayName) {
-        SharedPreferences prefs = getSharedPreferences("whatToEat", Context.MODE_PRIVATE);
-        String storedArrayString = prefs.getString(arrayName, null);
+        String storedArrayString = sharedPreferences.getString(arrayName, null);
         if (storedArrayString != null) {
             try {
                 JSONArray jsonArray = new JSONArray(storedArrayString);
@@ -123,13 +115,12 @@ public class WhatToEatActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        return new ArrayList<String>();
+        return new ArrayList<>();
     }
 
-    // Display Foods
     public void displayFoods() {
         container.removeAllViews();
-        ArrayList<String> foods = getArray("foods");
+        ArrayList<String> foods = getArray("FOODS");
         for (int i = 0; i < foods.size(); i++) {
             TextView food = new TextView(WhatToEatActivity.this);
             food.setLayoutParams(new LinearLayout.LayoutParams(
@@ -142,10 +133,11 @@ public class WhatToEatActivity extends AppCompatActivity {
             food.setTextColor(Color.parseColor("#478778"));
             food.setGravity(Gravity.CENTER);
             food.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
-            int finalI = i;
+
+            int removeIndex = i;
             food.setOnClickListener(v -> {
-                foods.remove(finalI);
-                saveArray(foods.toArray(new String[0]), "foods");
+                foods.remove(removeIndex);
+                saveArray(foods.toArray(new String[0]), "FOODS");
                 displayFoods();
             });
 
@@ -154,7 +146,6 @@ public class WhatToEatActivity extends AppCompatActivity {
         }
     }
 
-    // Method to create and show the input dialog/modal
     private void openInputDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("添加食物");
@@ -165,9 +156,9 @@ public class WhatToEatActivity extends AppCompatActivity {
 
         EditText input = dialogView.findViewById(R.id.newFood);
         builder.setPositiveButton("SAVE", (dialog, which) -> {
-                ArrayList<String> foods = getArray("foods");
+                ArrayList<String> foods = getArray("FOODS");
                 foods.add(input.getText().toString());
-                saveArray(foods.toArray(new String[0]), "foods");
+                saveArray(foods.toArray(new String[0]), "FOODS");
                 displayFoods();
         });
         builder.setNegativeButton("CANCEL", (dialog, which) -> dialog.dismiss());
@@ -176,7 +167,6 @@ public class WhatToEatActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    // error page when crash
     private void openError() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("炸啦!");
