@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:text="\n这是多少钱？\n"
                 android:fontFamily="@font/simhei"
-                android:textSize="50dp"
+                android:textSize="40dp"
                 android:textFontWeight="900"
                 android:textColor="#8069A6" />
 

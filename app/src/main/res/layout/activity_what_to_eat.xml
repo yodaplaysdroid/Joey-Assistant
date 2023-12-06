@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:text="\n今天恰森莫？\n"
                 android:fontFamily="@font/simhei"
-                android:textSize="50dp"
+                android:textSize="40dp"
                 android:textFontWeight="900"
                 android:textColor="#7CB495" />
 
@@ -70,7 +70,9 @@
                         android:textStyle="bold"
                         android:textSize="30sp"
                         android:layout_gravity="center"
-                        android:layout_margin="30dp"/>
+                        android:layout_margin="20dp"
+                        android:clickable="true"
+                        android:focusable="true"/>
 
                     <Button
                         android:id="@+id/startStopButton1"

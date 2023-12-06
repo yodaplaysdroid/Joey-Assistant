@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.TypedValue;
@@ -67,6 +69,18 @@ public class WhatToEatActivity extends AppCompatActivity {
         displayFoods();
 
         Handler handler = new Handler();
+
+        chosenFood.setOnClickListener(v -> {
+            if (!chosenFood.getText().toString().equals("我要吃...")) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://m.amap.com/search/view/keywords=%s", chosenFood.getText().toString())));
+
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                    openError();
+                }
+            }
+        });
 
         startStopButton.setOnClickListener(v -> {
             ArrayList<String> foods = getArray("FOODS");

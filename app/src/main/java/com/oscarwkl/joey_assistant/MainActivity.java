@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,10 +21,12 @@ import androidx.cardview.widget.CardView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Random;
 
 
@@ -188,20 +192,17 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        mixueButton.setOnClickListener(v -> openError());
+        mixueButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MixueActivity.class);
+            startActivity(intent);
+        });
 
         escapeRoomButton.setOnClickListener(v -> openError());
 
         myPageButton.setOnClickListener(v -> {
-            String url = "androidamap://poi?sourceApplication=joeyassistant&keywords=蜜雪冰城&dev=0";
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            intent.setPackage("com.autonavi.minimap");
-
-            if (intent.resolveActivity(getPackageManager()) != null) {
-                startActivity(intent);
-            } else {
-                openError();
-            }
+//            String url = "androidamap://poi?sourceApplication=joeyassistant&keywords=蜜雪冰城&dev=0";
+//            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//            intent.setPackage("com.autonavi.minimap");
         });
 
         aboutUsButton.setOnClickListener(v -> {
