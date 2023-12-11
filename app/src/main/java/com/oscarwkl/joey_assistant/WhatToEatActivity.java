@@ -72,11 +72,17 @@ public class WhatToEatActivity extends AppCompatActivity {
 
         chosenFood.setOnClickListener(v -> {
             if (!chosenFood.getText().toString().equals("我要吃...")) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.format("https://m.amap.com/search/view/keywords=%s", chosenFood.getText().toString())));
+                String url = String.format(
+                        "androidamap://poi?sourceApplication=joeyassistant&keywords=%s&dev=0",
+                        chosenFood.getText().toString()
+                );
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.setPackage("com.autonavi.minimap");
 
-                if (intent.resolveActivity(getPackageManager()) != null) {
+                try {
                     startActivity(intent);
-                } else {
+                } catch (Exception e) {
+                    e.printStackTrace();
                     openError();
                 }
             }

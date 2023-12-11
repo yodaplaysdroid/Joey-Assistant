@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#C2ADEA"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp">
+    >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -18,11 +17,14 @@
         tools:layout_editor_absoluteX="20dp">
 
         <LinearLayout
+            android:id="@+id/conversionLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="100dp"
-            android:paddingBottom="30dp">
+            android:paddingBottom="30dp"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
 
             <ImageView
                 android:id="@+id/backButton1"

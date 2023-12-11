@@ -1,7 +1,9 @@
 package com.oscarwkl.joey_assistant;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,16 +21,24 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+
 public class MixueActivity extends AppCompatActivity {
-    private final String menu[] = { "厚芋泥奶茶", "芋泥好暖椰", "红豆好糯椰", "冰鲜柠檬水", "蜜桃四季春",
-                                    "珍珠奶茶", "满杯百香果", "冰打鲜橙", "椰果奶茶", "原味奶茶", "红豆奶茶",
-                                    "芋圆奶茶", "三拼霸霸奶茶", "燕麦奶茶", "布丁奶茶", "双拼奶茶",
-                                    "菠萝甜心橙", "芋圆葡萄", "百香芒芒", "莓果三姐妹", "草莓啵啵",
-                                    "港式杨枝甘露", "桑葚莓莓" };
+    private final String[] defaultMenu = {
+            "珍珠奶茶", "满杯百香果", "冰打鲜橙", "椰果奶茶", "原味奶茶", "红豆奶茶",
+            "芋圆奶茶", "三拼霸霸奶茶", "燕麦奶茶", "布丁奶茶", "双拼奶茶",
+            "菠萝甜心橙", "芋圆葡萄", "百香芒芒", "莓果三姐妹", "草莓啵啵",
+            "港式杨枝甘露", "桑葚莓莓", "冰鲜柠檬水", "蜜桃四季春",
+    };
+    private String[] menu;
     private LinearLayout container;
     private TextView chosenDrink;
     private Button startStopButton;
-    private Button findMixue;
 
     private boolean isShuffling = false;
     private Runnable shuffleRunnable;
@@ -46,10 +56,10 @@ public class MixueActivity extends AppCompatActivity {
 
         ImageView backButton = findViewById(R.id.backButton4);
         ImageView gif3 = findViewById(R.id.gif3);
+        Button findMixue = findViewById(R.id.mixueNav);
         container = findViewById(R.id.drinkBox);
         chosenDrink = findViewById(R.id.chosenDrink);
         startStopButton = findViewById(R.id.startStopButton3);
-        findMixue = findViewById(R.id.mixueNav);
 
         backButton.setOnClickListener(view -> finish());
 
@@ -90,13 +100,35 @@ public class MixueActivity extends AppCompatActivity {
         });
 
         findMixue.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://m.amap.com/search/view/keywords=蜜雪冰城"));
-            if (intent.resolveActivity(getPackageManager()) != null) startActivity(intent);
-            else openError();
+            String url = "androidamap://poi?sourceApplication=joeyassistant&keywords=蜜雪冰城&dev=0";
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            intent.setPackage("com.autonavi.minimap");
+
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+                openError();
+            }
         });
     }
 
     public void displayDrinks() {
+        SharedPreferences sharedPreferences = getSharedPreferences("MIXUE", Context.MODE_PRIVATE);
+        String drinks = sharedPreferences.getString("DRINKS", null);
+        if (drinks != null) {
+            try {
+                JSONArray jsonArray = new JSONArray(drinks);
+                menu = new String[jsonArray.length()];
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    menu[i] = jsonArray.getString(i);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                menu = defaultMenu;
+            }
+        } else {
+            menu = defaultMenu;
+        }
         for (int i = 0; i < menu.length; i++) {
             TextView food = new TextView(MixueActivity.this);
             food.setLayoutParams(new LinearLayout.LayoutParams(

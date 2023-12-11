@@ -9,11 +9,16 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,8 +26,15 @@ import androidx.cardview.widget.CardView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -31,6 +43,7 @@ import java.util.Random;
 
 
 public class MainActivity extends AppCompatActivity {
+    TextView myPageDescrption;
 
     @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
@@ -49,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
         CardView whatToEatButton = findViewById(R.id.whatToEatButton);
         CardView buyOrNotButton = findViewById(R.id.buyOrNotButton);
         CardView mixueButton = findViewById(R.id.mixueButton);
-        CardView escapeRoomButton = findViewById(R.id.escapeRoomButton);
         CardView myPageButton = findViewById(R.id.myPageButton);
         CardView aboutUsButton = findViewById(R.id.aboutUsButton);
         TextView timeGreeting = findViewById(R.id.timeGreeting);
         ImageView timeIcon = findViewById(R.id.timeIcon);
+        myPageDescrption = findViewById(R.id.myPageDescription);
 
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -132,21 +145,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        escapeRoomButton.setOnTouchListener((v, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    escapeRoomButton.setCardBackgroundColor(Color.parseColor("#FFE4F1"));
-                    escapeRoomButton.setElevation(0);
-                    break;
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    escapeRoomButton.setCardBackgroundColor(Color.parseColor("#FFD3E0"));
-                    escapeRoomButton.setElevation(10);
-                    break;
-            }
-            return false;
-        });
-
         myPageButton.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -197,12 +195,44 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        escapeRoomButton.setOnClickListener(v -> openError());
-
         myPageButton.setOnClickListener(v -> {
-//            String url = "androidamap://poi?sourceApplication=joeyassistant&keywords=蜜雪冰城&dev=0";
-//            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//            intent.setPackage("com.autonavi.minimap");
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("ADMIN LOGIN");
+
+            LinearLayout loginLayout = new LinearLayout(this);
+            loginLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            loginLayout.setGravity(Gravity.CENTER);
+            loginLayout.setPadding(20, 10, 20, 10);
+
+            EditText password = new EditText(this);
+            password.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+
+            password.setHint("ENTER ADMIN PASSWORD");
+            password.setInputType(android.text.InputType.TYPE_CLASS_TEXT
+                    | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+            loginLayout.addView(password);
+
+            builder.setPositiveButton("LOGIN", (dialog, which) -> {
+                if (password.getText().toString().equals("changge0206")) {
+                    Intent intent = new Intent(MainActivity.this, DebugActivity.class);
+                    startActivity(intent);
+                } else {
+                    password.setText(" ");
+                    password.setHint("PASSWORD ERROR!");
+                }
+            });
+            builder.setNegativeButton("CANCEL", (dialog, which) -> dialog.dismiss());
+
+            builder.setView(loginLayout);
+            AlertDialog dialog = builder.create();
+            dialog.show();
         });
 
         aboutUsButton.setOnClickListener(v -> {
@@ -221,8 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView conversionDescription = findViewById(R.id.conversionButtonDescription);
         conversionDescription.setText("今日份 MYRCNY 汇率: " +
-            Float.toString(sharedPreferences.getFloat("CNY", 1.0f) /
-                sharedPreferences.getFloat("MYR", 1.0f)));
+            sharedPreferences.getFloat("CNY", 1.0f) / sharedPreferences.getFloat("MYR", 1.0f));
 
         TextView whatToEatDescription = findViewById(R.id.whatToEatDescription);
         Random random = new Random();

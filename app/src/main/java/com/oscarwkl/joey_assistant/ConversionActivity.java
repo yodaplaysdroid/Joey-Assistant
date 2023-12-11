@@ -1,18 +1,18 @@
 package com.oscarwkl.joey_assistant;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.SharedMemory;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,7 +22,7 @@ public class ConversionActivity extends AppCompatActivity {
     private EditText cnyInput;
     boolean isEditing = false;
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +34,11 @@ public class ConversionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_conversion);
 
         SharedPreferences sharedPreferences = getSharedPreferences("CURRENCY", MODE_PRIVATE);
+        ImageView backButton = findViewById(R.id.backButton1);
+        LinearLayout rootLayout = findViewById(R.id.conversionLayout);
         usdInput = findViewById(R.id.usd);
         myrInput = findViewById(R.id.myr);
         cnyInput = findViewById(R.id.cny);
-        ImageView backButton = findViewById(R.id.backButton1);
 
         float myrRate = sharedPreferences.getFloat("MYR", 0.0f);
         float cnyRate = sharedPreferences.getFloat("CNY", 0.0f);
@@ -124,8 +125,27 @@ public class ConversionActivity extends AppCompatActivity {
             public void afterTextChanged(Editable editable) {}
         });
 
-        // backButton onClick Listener
         backButton.setOnClickListener(view -> finish());
+
+        rootLayout.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                View focusedView = getCurrentFocus();
+                if (focusedView instanceof EditText) {
+                    System.out.println("meep");
+                    Rect outRect = new Rect();
+                    focusedView.getGlobalVisibleRect(outRect);
+
+                    // Check if touch was outside the EditText
+                    if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                        // Hide the keyboard
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+                        focusedView.clearFocus(); // Optionally, clear focus from EditText
+                    }
+                }
+            }
+            return false;
+        });
     }
 }
 
