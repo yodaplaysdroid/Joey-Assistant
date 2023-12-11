@@ -101,15 +101,15 @@ public class MixueActivity extends AppCompatActivity {
 
         findMixue.setOnClickListener(v -> {
             try {
-                String url = "geo:0,0?q=" + Uri.encode("蜜雪冰城");
+                String url = "androidamap://poi?sourceApplication=joeyassistant&keywords=蜜雪冰城&dev=0";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                intent.setPackage("com.google.android.apps.maps");
+                intent.setPackage("com.autonavi.minimap");
                 startActivity(intent);
             } catch (Exception e) {
                 try {
-                    String url = "androidamap://poi?sourceApplication=joeyassistant&keywords=蜜雪冰城&dev=0";
+                    String url = "geo:0,0?q=" + Uri.encode("mixue");
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    intent.setPackage("com.autonavi.minimap");
+                    intent.setPackage("com.google.android.apps.maps");
                     startActivity(intent);
                 } catch(Exception f) {
                     openError();
