@@ -260,6 +260,26 @@ public class MainActivity extends AppCompatActivity {
             whatToEatDescription.setText("今日份美食推荐: " + foods.get(random.nextInt(foods.size())));
         }
 
+        TextView mixueDescription = findViewById(R.id.mixueDescription);
+        SharedPreferences prefs = getSharedPreferences("MIXUE", Context.MODE_PRIVATE);
+        String drinks = prefs.getString("DRINKS", null);
+        String menu[];
+        if (drinks != null) {
+            try {
+                JSONArray jsonArray = new JSONArray(drinks);
+                menu = new String[jsonArray.length()];
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    menu[i] = jsonArray.getString(i);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                menu = MixueActivity.defaultMenu;
+            }
+        } else {
+            menu = MixueActivity.defaultMenu;
+        }
+        mixueDescription.setText("我猜你想喝: " + menu[random.nextInt(menu.length)]);
+
         TextView buyOrNotDescription = findViewById(R.id.buyOrNotDescription);
         String[] buy = { "刷卡拿下！", "下次一定！" };
         buyOrNotDescription.setText("今日的风水分析建议: " + buy[random.nextInt(2)]);

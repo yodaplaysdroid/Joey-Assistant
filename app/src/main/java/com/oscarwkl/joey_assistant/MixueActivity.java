@@ -29,7 +29,7 @@ import java.util.Arrays;
 
 
 public class MixueActivity extends AppCompatActivity {
-    private final String[] defaultMenu = {
+    public static final String[] defaultMenu = {
             "珍珠奶茶", "满杯百香果", "冰打鲜橙", "椰果奶茶", "原味奶茶", "红豆奶茶",
             "芋圆奶茶", "三拼霸霸奶茶", "燕麦奶茶", "布丁奶茶", "双拼奶茶",
             "菠萝甜心橙", "芋圆葡萄", "百香芒芒", "莓果三姐妹", "草莓啵啵",
@@ -100,14 +100,20 @@ public class MixueActivity extends AppCompatActivity {
         });
 
         findMixue.setOnClickListener(v -> {
-            String url = "androidamap://poi?sourceApplication=joeyassistant&keywords=蜜雪冰城&dev=0";
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            intent.setPackage("com.autonavi.minimap");
-
             try {
+                String url = "geo:0,0?q=" + Uri.encode("蜜雪冰城");
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                intent.setPackage("com.google.android.apps.maps");
                 startActivity(intent);
             } catch (Exception e) {
-                openError();
+                try {
+                    String url = "androidamap://poi?sourceApplication=joeyassistant&keywords=蜜雪冰城&dev=0";
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    intent.setPackage("com.autonavi.minimap");
+                    startActivity(intent);
+                } catch(Exception f) {
+                    openError();
+                }
             }
         });
     }
