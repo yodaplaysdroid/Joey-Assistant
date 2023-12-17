@@ -24,6 +24,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         TextView timeGreeting = findViewById(R.id.timeGreeting);
         ImageView timeIcon = findViewById(R.id.timeIcon);
         myPageDescrption = findViewById(R.id.myPageDescription);
+        FloatingActionButton muyuButton = findViewById(R.id.muyuButton);
 
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -247,6 +250,11 @@ public class MainActivity extends AppCompatActivity {
 
             AlertDialog dialog = builder.create();
             dialog.show();
+        });
+
+        muyuButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MuyuActivity.class);
+            startActivity(intent);
         });
 
         TextView conversionDescription = findViewById(R.id.conversionButtonDescription);

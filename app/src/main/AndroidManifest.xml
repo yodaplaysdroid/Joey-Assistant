@@ -38,6 +38,8 @@
             android:name=".MixueActivity"/>
         <activity
             android:name=".DebugActivity" />
+        <activity
+            android:name=".MuyuActivity" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
